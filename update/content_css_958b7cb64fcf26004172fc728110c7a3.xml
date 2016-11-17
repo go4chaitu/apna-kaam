@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="content_css">
+    <content_css action="INSERT_OR_UPDATE">
+        <name>gojs.css</name>
+        <style>/* Copyright 1998-2016 Northwoods Software Corporation. All Rights Reserved. */&#13;
+&#13;
+body {&#13;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;&#13;
+  font-size: 14px;&#13;
+  line-height: 1.42857143;&#13;
+  color: #333;&#13;
+}&#13;
+&#13;
+p {&#13;
+  max-width: 700px;&#13;
+}&#13;
+&#13;
+p.box {&#13;
+  border: 1px solid #BBB;&#13;
+  padding: 4px 4px 6px 4px;&#13;
+}&#13;
+&#13;
+p.warning {&#13;
+  background-color: #FCD5CD&#13;
+}&#13;
+&#13;
+.diagramContainer {&#13;
+  border : solid 1px blue;&#13;
+}&#13;
+pre {&#13;
+  font-size : 9pt;&#13;
+}&#13;
+&#13;
+.footer {&#13;
+  text-align: right;&#13;
+  font-size: 10px;&#13;
+}&#13;
+&#13;
+#sample {&#13;
+  margin-left: 140px;&#13;
+}&#13;
+&#13;
+#menu {&#13;
+  white-space: nowrap;&#13;
+  overflow: hidden;&#13;
+  border: 1px solid #DDD;&#13;
+  padding: 4px;&#13;
+  margin-right: 5px;&#13;
+  background-color: #F9F9F9;&#13;
+  width: 120px;&#13;
+  float: left;&#13;
+}&#13;
+&#13;
+#sections {&#13;
+  list-style-type: none;&#13;
+  font-size: 13px;&#13;
+  padding: 0px;&#13;
+  margin: 0px;&#13;
+  line-height: 1.3em;&#13;
+}&#13;
+&#13;
+a { text-decoration: none; }&#13;
+li a { display: block; }&#13;
+a:hover { text-decoration: underline; }&#13;
+&#13;
+li a { color: #0645AD; }&#13;
+li a:hover, a li:focus { background: #CEDFF2; }&#13;
+li a.selected { background: #1E90FF; color: white }&#13;
+&#13;
+.index {&#13;
+  margin-top: 0px;&#13;
+}&#13;
+&#13;
+.samplespan {&#13;
+  position: absolute;&#13;
+  z-index: 99;&#13;
+  display: none;&#13;
+  left: 135px;&#13;
+  margin-top: -80px;&#13;
+  border: 2px solid gray;&#13;
+  height: 200px;&#13;
+}&#13;
+&#13;
+a:hover .samplespan { display:block; }</style>
+        <sys_class_name>content_css</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-11-16 06:23:49</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>958b7cb64fcf26004172fc728110c7a3</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>gojs.css</sys_name>
+        <sys_package display_value="Apna Kaam" source="x_snc_apna_kaam">24a092ae4f0f26004172fc728110c783</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Apna Kaam">24a092ae4f0f26004172fc728110c783</sys_scope>
+        <sys_update_name>content_css_958b7cb64fcf26004172fc728110c7a3</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-11-16 06:23:49</sys_updated_on>
+        <type>local</type>
+        <url/>
+    </content_css>
+</record_update>

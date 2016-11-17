@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="sys_ui_script">
+    <sys_ui_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <description/>
+        <global>false</global>
+        <name>x_snc_apna_kaam.ivrt-model.js</name>
+        <script><![CDATA[function init() {
+      if (window.goSamples) goSamples();  // init for these samples -- you don't need to call this
+      var $ = go.GraphObject.make;  // for conciseness in defining templates
+      myDiagram =
+        $(go.Diagram, "myDiagramDiv",
+          { allowCopy: false,
+            initialContentAlignment: go.Spot.Center,
+            "draggingTool.dragsTree": true,
+            "commandHandler.deletesTree": true,
+            layout:
+              $(go.TreeLayout,
+                { angle: 90 }),
+            "undoManager.isEnabled": true
+          });
+
+      // when the document is modified, add a "*" to the title and enable the "Save" button
+      myDiagram.addDiagramListener("Modified", function(e) {
+        var button = document.getElementById("SaveButton");
+        if (button) button.disabled = !myDiagram.isModified;
+        var idx = document.title.indexOf("*");
+        if (myDiagram.isModified) {
+          if (idx < 0) document.title += "*";
+        } else {
+          if (idx >= 0) document.title = document.title.substr(0, idx);
+        }
+      });
+	
+      var bluegrad = $(go.Brush, "Linear", { 0: "#C4ECFF", 1: "#70D4FF" });
+      var greengrad = $(go.Brush, "Linear", { 0: "#B1E2A5", 1: "#7AE060" });
+      var whitegrad = $(go.Brush, "Linear", { 0: "#FFFFFF", 1: "#FFFFFF" });	
+
+      // each action is represented by a shape and some text
+      var actionTemplate =
+        $(go.Panel, "Horizontal",
+          $(go.Shape,
+            { width: 15, height: 12 },
+            new go.Binding("figure"),
+            new go.Binding("fill")
+          ),
+          $(go.TextBlock,
+            { font: "10pt Verdana, sans-serif" },
+            new go.Binding("text")
+          )
+        );
+
+      // each regular Node has body consisting of a title followed by a collapsible list of actions,
+      // controlled by a PanelExpanderButton, with a TreeExpanderButton underneath the body
+      myDiagram.nodeTemplate =  // the default node template
+        $(go.Node, "Vertical",
+		  { isTreeExpanded: false },
+          { selectionObjectName: "BODY", deletable: false },
+          // the main "BODY" consists of a RoundedRectangle surrounding nested Panels
+          $(go.Panel, "Auto",
+            { name: "BODY" },
+            $(go.Shape, "Rectangle",
+              { fill: whitegrad, stroke: null }
+            ),
+            $(go.Panel, "Vertical",
+              { margin: 3 },
+              // the title
+              $(go.TextBlock,
+                { stretch: go.GraphObject.Horizontal,
+                font: "bold 12pt Verdana, sans-serif"
+                },
+                new go.Binding("text", "question")
+              ),
+              // the optional list of actions
+              $(go.Panel, "Vertical",
+                { stretch: go.GraphObject.Horizontal, visible: false },  // not visible unless there is more than one action
+                new go.Binding("visible", "actions", function(acts) {
+                  return (Array.isArray(acts) && acts.length > 0);
+                }),
+                // headered by a label and a PanelExpanderButton inside a Table
+                $(go.Panel, "Table",
+                  { stretch: go.GraphObject.Horizontal },
+                  $(go.TextBlock, "",
+                    { alignment: go.Spot.Left,
+                    font: "10pt Verdana, sans-serif"
+                    }
+                  ),
+                  $("PanelExpanderButton", "COLLAPSIBLE",  // name of the object to make visible or invisible
+                    { column: 1, alignment: go.Spot.Right }
+                  )
+                ), // end Table panel
+                // with the list data bound in the Vertical Panel
+                $(go.Panel, "Vertical",
+                  { name: "COLLAPSIBLE",  // identify to the PanelExpanderButton
+                    padding: 2,
+                    stretch: go.GraphObject.Horizontal,  // take up whole available width
+                    background: "white",  // to distinguish from the node's body
+                    defaultAlignment: go.Spot.Left,  // thus no need to specify alignment on each element
+                    itemTemplate: actionTemplate  // the Panel created for each item in Panel.itemArray
+                  },
+                  new go.Binding("itemArray", "actions")  // bind Panel.itemArray to nodedata.actions
+                )  // end action list Vertical Panel
+              )  // end optional Vertical Panel
+            )  // end outer Vertical Panel
+          ),  // end "BODY"  Auto Panel
+          $(go.Panel,  // this is underneath the "BODY"
+            { height: 15 },  // always this height, even if the TreeExpanderButton is not visible
+            $("TreeExpanderButton")
+          )
+        );
+
+      // define a second kind of Node:
+      myDiagram.nodeTemplateMap.add("Terminal",
+        $(go.Node, "Spot",
+          { deletable: false },
+          $(go.Shape, "Circle",
+            { width: 55, height: 55, fill: greengrad, stroke: null }
+          ),
+          $(go.TextBlock,
+            { font: "10pt Verdana, sans-serif" },
+            new go.Binding("text")
+          )
+        )
+      );
+
+      myDiagram.linkTemplate =
+        $(go.Link, go.Link.Orthogonal,
+          { deletable: false, corner: 10 },
+          $(go.Shape,
+            { strokeWidth: 2 }
+          ),
+          $(go.TextBlock, go.Link.OrientUpright,
+            { background: "white",
+              visible: false,  // unless the binding sets it to true for a non-empty string
+              segmentIndex: -2,
+              segmentOrientation: go.Link.None
+            },
+            new go.Binding("text", "answer"),
+            // hide empty string;
+            // if the "answer" property is undefined, visible is false due to above default setting
+            new go.Binding("visible", "answer", function(a) { return (a ? true : false); })
+          )
+        );
+
+      var nodeDataArray = [
+        { key: 1, question: "Health",
+          actions: [
+            { text: "Incidents", fill: "blue" },
+            { text: "Projects",  fill: "red" },
+            { text: "SE Stories", fill: "yellow" }
+          ]
+        },
+        { key: 2, question: "Incidents",
+          actions: [
+            { text: "Awaiting", figure: "ElectricalHazard", fill: "blue" },
+            { text: "In Progress", figure: "FireHazard", fill: "yellow" },
+            { text: "Resolved", figure: "IrritationHazard", fill: "red" }
+          ]
+        },
+        { key: 3, question: "Projects",
+          actions: [
+            { text: "Partner Portal", figure: "ElectricalHazard", fill: "blue" },
+            { text: "Professional Services", figure: "FireHazard", fill: "red" },
+            { text: "Sales", figure: "IrritationHazard", fill: "yellow" },
+            { text: "Marketing", figure: "IrritationHazard", fill: "yellow" }			  
+          ]
+        },
+		{ key: 4, question: "SE Stories",
+          actions: [
+            { text: "", figure: "ElectricalHazard", fill: "blue" },
+            { text: "Professional Services", figure: "FireHazard", fill: "red" },
+            { text: "Sales", figure: "IrritationHazard", fill: "yellow" },
+            { text: "Marketing", figure: "IrritationHazard", fill: "yellow" }			  
+          ]
+        },  
+        { key: 5, category: "Terminal", text: "Shyam.J",
+          actions: [
+            { text: "In Progress", fill: "blue" },
+            { text: "Awaiting", fill: "red" }
+          ]
+        },
+		{ key: 6, category: "Terminal", text: "Ritwik",
+          actions: [
+            { text: "In Progress", fill: "blue" },
+            { text: "Awaiting", fill: "red" }
+          ]
+        }
+      ];
+      var linkDataArray = [
+        { from: 1, to: 2, answer: 1 },
+        { from: 1, to: 3, answer: 2 },
+        { from: 1, to: 4, answer: 3 },
+		{ from: 2, to: 5, answer: 5 },
+		{ from: 3, to: 6, answer: 6 }
+      ];
+
+	  /*myDiagram.addDiagramListener("InitialLayoutCompleted", function(e) {
+		e.diagram.findTreeRoots().each(function(r) { r.expandTree(0); });
+	  });*/
+
+      // create the Model with the above data, and assign to the Diagram
+      myDiagram.model =
+        $(go.GraphLinksModel,
+          { nodeDataArray: nodeDataArray,
+            linkDataArray: linkDataArray });
+
+    }]]></script>
+        <script_name>ivrt-model.js</script_name>
+        <sys_class_name>sys_ui_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-11-16 06:59:28</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>94c3813a4fcf26004172fc728110c725</sys_id>
+        <sys_mod_count>21</sys_mod_count>
+        <sys_name>x_snc_apna_kaam.ivrt-model.js</sys_name>
+        <sys_package display_value="Apna Kaam" source="x_snc_apna_kaam">24a092ae4f0f26004172fc728110c783</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Apna Kaam">24a092ae4f0f26004172fc728110c783</sys_scope>
+        <sys_update_name>sys_ui_script_94c3813a4fcf26004172fc728110c725</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-11-16 18:04:06</sys_updated_on>
+        <use_scoped_format>false</use_scoped_format>
+    </sys_ui_script>
+</record_update>

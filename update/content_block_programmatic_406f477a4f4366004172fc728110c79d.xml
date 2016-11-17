@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<record_update table="content_block_programmatic">
+    <content_block_programmatic action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <category>general</category>
+        <condition/>
+        <conditional>false</conditional>
+        <frame/>
+        <logged_on>false</logged_on>
+        <name>Apna Kaam</name>
+        <programmatic_content><![CDATA[<script src="/x_snc_apna_kaam.go.js.jsdbx"></script>
+<link href="/958b7cb64fcf26004172fc728110c7a3.cssdbx" rel="stylesheet" type="text/css" />
+<script id="code" src="/x_snc_apna_kaam.ivrt-model.js.jsdbx"/>
+<div id="myDiagramDiv" style="width:100%; height:300px;"></div>
+<script>init();</script>]]></programmatic_content>
+        <sys_class_name>content_block_programmatic</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2016-11-16 17:09:38</sys_created_on>
+        <sys_customer_update>true</sys_customer_update>
+        <sys_id>406f477a4f4366004172fc728110c79d</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>Apna Kaam</sys_name>
+        <sys_package display_value="Apna Kaam" source="x_snc_apna_kaam">24a092ae4f0f26004172fc728110c783</sys_package>
+        <sys_policy/>
+        <sys_replace_on_upgrade>false</sys_replace_on_upgrade>
+        <sys_scope display_value="Apna Kaam">24a092ae4f0f26004172fc728110c783</sys_scope>
+        <sys_update_name>content_block_programmatic_406f477a4f4366004172fc728110c79d</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2016-11-16 17:29:53</sys_updated_on>
+        <two_phase>false</two_phase>
+    </content_block_programmatic>
+</record_update>
